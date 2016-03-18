@@ -1,0 +1,40 @@
+﻿<?xml version='1.0' ?>
+<Config>
+    <OPCServer ConnectionString="OPC.SimaticNET">
+      <OPCGroup GroupName="PLCGroup" GroupString="S7:[PLC03]" UpdateRate="350">
+
+        <OPCItem ItemName="abc" ClientHandler="1" OPCItemName="DB1,W0,1"  ItemType="READ" IsActive="false"/>
+        <!--堆垛机位置-->
+        <OPCItem ItemName="CraneLocationX" ClientHandler="2" OPCItemName="DB1,B2,1"  ItemType="READ" IsActive="false"/>
+        <OPCItem ItemName="CraneLocationY" ClientHandler="3" OPCItemName="DB1,B3,1"  ItemType="READ" IsActive="false"/>
+        <!--堆垛机故障位，判断是否可以给堆垛机下任务-->
+        <OPCItem ItemName="CraneErrStatus" ClientHandler="4" OPCItemName="DB1,B11,1"  ItemType="READ" IsActive="false"/>
+        <!--堆垛机货叉状态-->
+        <OPCItem ItemName="ForkStatus" ClientHandler="5" OPCItemName="DB1,B12,1"  ItemType="READ" IsActive="false"/>
+        <!--堆垛机状态-->
+        <OPCItem ItemName="CraneStatus" ClientHandler="6" OPCItemName="DB1,B13,1"  ItemType="READ" IsActive="false"/>
+        <!--堆垛机动作-->
+        <OPCItem ItemName="CraneAction" ClientHandler="7" OPCItemName="DB1,B14,1"  ItemType="READ" IsActive="false"/>
+        <!--堆垛机故障1-->
+        <OPCItem ItemName="CraneError1" ClientHandler="8" OPCItemName="DB1,B15,1"  ItemType="READ" IsActive="false"/>
+        <!--堆垛机故障2-->
+        <OPCItem ItemName="CraneError2" ClientHandler="9" OPCItemName="DB1,B16,1"  ItemType="READ" IsActive="false"/>
+        <!--堆垛机任务状态-->
+        <OPCItem ItemName="CraneTaskStatus" ClientHandler="10" OPCItemName="DB1,B17,1"  ItemType="READ" IsActive="false"/>
+        <!--托盘号-->
+        <OPCItem ItemName="CranePalletCode" ClientHandler="11" OPCItemName="DB1,CHAR18,8"  ItemType="READ" IsActive="false"/>
+        <!--任务号-->
+        <OPCItem ItemName="CraneTaskNo" ClientHandler="12" OPCItemName="DB1,CHAR26,10"  ItemType="READ"/>
+        <!--货物类型-->
+        <OPCItem ItemName="CraneProductType" ClientHandler="13" OPCItemName="DB1,INT36,1" ItemType="READ" IsActive="false"/>
+        <!--起升速度 米/分-->
+        <OPCItem ItemName="LiftingSpeed" ClientHandler="14" OPCItemName="DB1,W38,1"  ItemType="READ" IsActive="false"/>
+        <!--行走速度 米/分-->
+        <OPCItem ItemName="WalkingSpeed" ClientHandler="15" OPCItemName="DB1,W40,1"  ItemType="READ" IsActive="false"/>
+        <!--货叉速度 米/分-->
+        <OPCItem ItemName="ForkingSpeed" ClientHandler="16" OPCItemName="DB1,W42,1"  ItemType="READ" IsActive="false"/>
+        <!--变频故障-->
+        <OPCItem ItemName="InverterErr" ClientHandler="17" OPCItemName="DB1,INT44,1" ItemType="READ" IsActive="false"/>
+      </OPCGroup>
+    </OPCServer>
+  </Config>

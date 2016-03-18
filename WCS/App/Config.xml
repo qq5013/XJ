@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <LogLevel>DEBUG</LogLevel>
+  <Attributes>
+    <Attribute Name="ScanPortName" Value="COM2" />
+    <Attribute Name="ScanBaudRate" Value="19200" />
+    <Attribute Name="IsShowFlag" Value="1" />
+  </Attributes>
+  <Services>
+    <Service Name="CranePLC1" Type="MCP.Service.Siemens.dll, MCP.Service.Siemens.OPCService" ConfigFile="CranePLC1.xml" />
+    <Service Name="CranePLC2" Type="MCP.Service.Siemens.dll, MCP.Service.Siemens.OPCService" ConfigFile="CranePLC2.xml" />
+    <Service Name="CarPLC" Type="MCP.Service.Siemens.dll, MCP.Service.Siemens.OPCService" ConfigFile="CarPLC.xml" />
+    <Service Name="Crane" Type="MCP.Service.TCP.dll, MCP.Service.TCP.TCPService" ConfigFile="Crane.xml" />
+  </Services>
+  <Processes>
+    <!--堆垛机Process-->
+    <Process Name="CraneProcess" Type="Dispatching.dll, Dispatching.Process.CraneProcess">
+      <Item ServiceName="CranePLC1" ItemName="CraneTaskFinished" />
+      <Item ServiceName="CranePLC2" ItemName="CraneTaskFinished" />
+    </Process>
+    
+    <!--小车Process-->
+    <Process Name="CarProcess" Type="Dispatching.dll, Dispatching.Process.CarProcess">
+      <Item ServiceName="CarPLC" ItemName="01_CarRequest" />
+      <Item ServiceName="CarPLC" ItemName="02_CarRequest" />
+      <Item ServiceName="CarPLC" ItemName="03_CarRequest" />
+    </Process>
+  </Processes>
+</Configuration>

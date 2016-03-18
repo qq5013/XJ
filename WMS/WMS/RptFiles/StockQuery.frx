@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/09/2015 20:19:33" ReportInfo.Modified="11/09/2015 21:10:44" ReportInfo.CreatorVersion="1.9.9.0">
+  <Dictionary>
+    <TableDataSource Name="StockQuery" ReferenceName="StockQuery" DataType="System.Int32" Enabled="true">
+      <Column Name="BillID" DataType="System.String"/>
+      <Column Name="FinishDate" DataType="System.DateTime"/>
+      <Column Name="BillTypeCode" DataType="System.String"/>
+      <Column Name="BillTypeName" DataType="System.String"/>
+      <Column Name="AreaCode" DataType="System.String"/>
+      <Column Name="AreaName" DataType="System.String"/>
+      <Column Name="CellCode" DataType="System.String"/>
+      <Column Name="FactoryID" DataType="System.String"/>
+      <Column Name="FactoryName" DataType="System.String"/>
+      <Column Name="TrainNo" DataType="System.String"/>
+      <Column Name="AxieLocation" DataType="System.String"/>
+      <Column Name="Xc" DataType="System.String"/>
+      <Column Name="ProductCode" DataType="System.String"/>
+      <Column Name="ProductName" DataType="System.String"/>
+      <Column Name="ProductTypeCode" DataType="System.String"/>
+      <Column Name="ProductTypeName" DataType="System.String"/>
+    </TableDataSource>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" LeftMargin="3" RightMargin="3">
+    <PageHeaderBand Name="PageHeader1" Width="1099.98" Height="76.27">
+      <TextObject Name="Text1" Left="-0.05" Width="1047.09" Height="33.28" Text="周转记录表" HorzAlign="Center" VertAlign="Center" Font="微软雅黑, 12pt, style=Bold"/>
+      <TableObject Name="Table1" Top="52.06" Width="1094.6" Height="24.21" Border.Lines="All">
+        <TableColumn Name="Column1" Width="82.41"/>
+        <TableColumn Name="Column2" Width="99.83"/>
+        <TableColumn Name="Column3" Width="87.73"/>
+        <TableColumn Name="Column4" Width="68.8"/>
+        <TableColumn Name="Column5" Width="106.97"/>
+        <TableColumn Name="Column6" Width="125.5"/>
+        <TableColumn Name="Column7" Width="67.29"/>
+        <TableColumn Name="Column8" Width="75.6"/>
+        <TableColumn Name="Column9" Width="90.77"/>
+        <TableColumn Name="Column10" Width="84.72"/>
+        <TableColumn Name="Column11" Width="83.2"/>
+        <TableColumn Name="Column12" Width="121.78"/>
+        <TableRow Name="Row1" Height="24.21">
+          <TableCell Name="Cell1" Border.Lines="All" Text="产品类型" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell2" Border.Lines="All" Text="产品编号" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell3" Border.Lines="All" Text="产品名称" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell4" Border.Lines="All" Text="操作类型" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell5" Border.Lines="All" Text="单号" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell6" Border.Lines="All" Text="完成时间" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell7" Border.Lines="All" Text="库区" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell8" Border.Lines="All" Text="货位" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell9" Border.Lines="All" Text="工厂" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell10" Border.Lines="All" Text="上车号" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell11" Border.Lines="All" Text="上车轴位" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell12" Border.Lines="All" Text="修程" VertAlign="Center" Font="宋体, 9pt"/>
+        </TableRow>
+      </TableObject>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="80.27" Width="1099.98" Height="27.99" CanGrow="true" CanBreak="true" DataSource="StockQuery">
+      <TableObject Name="Table2" Width="1094.54" Height="27.99" Border.Lines="All">
+        <TableColumn Name="Column13" Width="82.41"/>
+        <TableColumn Name="Column14" Width="99.83"/>
+        <TableColumn Name="Column15" Width="87.73"/>
+        <TableColumn Name="Column16" Width="68.8"/>
+        <TableColumn Name="Column17" Width="106.97"/>
+        <TableColumn Name="Column18" Width="125.5"/>
+        <TableColumn Name="Column19" Width="67.29"/>
+        <TableColumn Name="Column20" Width="75.6"/>
+        <TableColumn Name="Column21" Width="90.77"/>
+        <TableColumn Name="Column22" Width="84.72"/>
+        <TableColumn Name="Column23" Width="83.2"/>
+        <TableColumn Name="Column24" Width="121.72"/>
+        <TableRow Name="Row2" Height="27.99">
+          <TableCell Name="Cell13" Border.Lines="All" Text="[StockQuery.ProductTypeName]" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell14" Border.Lines="All" Text="[StockQuery.ProductCode]" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell15" Border.Lines="All" Text="[StockQuery.ProductName]" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell16" Border.Lines="All" Text="[StockQuery.BillTypeName]" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell17" Border.Lines="All" Text="[StockQuery.BillID]" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell18" Border.Lines="All" Text="[IIf(Year([StockQuery.FinishDate])==1,&quot;&quot;,FormatDateTime([StockQuery.FinishDate],&quot;yyyy/MM/dd HH:mm:ss&quot;))]" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell19" Border.Lines="All" Text="[StockQuery.AreaName]" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell20" Border.Lines="All" Text="[StockQuery.CellCode]" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell21" Border.Lines="All" Text="[StockQuery.FactoryName]" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell22" Border.Lines="All" Text="[StockQuery.TrainNo]" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell23" Border.Lines="All" Text="[StockQuery.AxieLocation]" VertAlign="Center" Font="宋体, 9pt"/>
+          <TableCell Name="Cell24" Border.Lines="All" Text="[StockQuery.Xc]" VertAlign="Center" Font="宋体, 9pt"/>
+        </TableRow>
+      </TableObject>
+      <Sort>
+        <Sort Expression="[StockQuery.ProductCode]"/>
+        <Sort Expression="[StockQuery.FinishDate]"/>
+      </Sort>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="112.26" Width="1099.98" Height="18.9"/>
+  </ReportPage>
+</Report>

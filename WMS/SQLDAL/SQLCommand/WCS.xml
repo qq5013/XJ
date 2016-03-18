@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SqlCommand>
+  <!--任务信息-->
+  <Command ID="SelectTask">
+    <CommandString>
+      SELECT WCS_TASK.*, CMD_BillType.BillTypeName,CMD_Product.ProductName, Sys_TableState.StateDesc,CMD_Car.StationNo,
+      (case when WCS_TASK.TaskType='11' or (WCS_TASK.TaskType='14' and WCS_TASK.State in('5','6')) then CMD_Car.StationNo when WCS_TASK.TaskType in('12','13') or (WCS_TASK.TaskType='14' and WCS_TASK.State in('0','1','2','3','4','7','9'))  then WCS_TASK.CellCode else '' end) FromStation,
+      (case when WCS_TASK.TaskType='11' or (WCS_TASK.TaskType='14' and WCS_TASK.State in('5','6','7','9')) then WCS_TASK.CellCode when WCS_TASK.TaskType in('12') or (WCS_TASK.TaskType='14' and WCS_TASK.State in('0','1','2','3','4')) then CMD_Car.StationNo when WCS_TASK.TaskType='13' then WCS_TASK.ToCellCode else '' end) ToStation
+      FROM WCS_TASK LEFT OUTER JOIN
+      CMD_Car ON WCS_TASK.CarNo = CMD_Car.CarNo
+      Left join CMD_Product ON WCS_TASK.ProductCode=CMD_Product.ProductCode
+      left join CMD_BillType On CMD_BillType.BillTypeCode=WCS_TASK.BillTypeCode
+      LEFT JOIN  Sys_TableState on Sys_TableState.TableName='WCS_TASK' and Sys_TableState.FieldName='State' and WCS_TASK.State=Sys_TableState.State
+      Where {0}
+      ORDER BY WCS_TASK.TaskLevel DESC, WCS_TASK.RequestDate,WCS_TASK.StartDate
+    </CommandString>
+  </Command>
+  
+  <Command ID="sp_GetCell">
+    <CommandString>
+      sp_GetCell
+    </CommandString>
+  </Command>
+  <Command ID="sp_GetEmptyCell">
+    <CommandString>
+      sp_GetEmptyCell
+    </CommandString>
+  </Command>
+  <Command ID="sp_GetPalletCell">
+    <CommandString>
+      sp_GetPalletCell
+    </CommandString>
+  </Command>
+  <Command ID="Sp_CreatePalletOutTask">
+    <CommandString>
+      Sp_CreatePalletOutTask
+    </CommandString>
+  </Command>
+  <Command ID="Sp_CreatePalletOutTask2">
+    <CommandString>
+      Sp_CreatePalletOutTask2
+    </CommandString>
+  </Command>
+  <Command ID="Sp_CreatePalletInTask">
+    <CommandString>
+      Sp_CreatePalletInTask
+    </CommandString>
+  </Command>
+  <Command ID="Sp_RequestPalletInTask">
+    <CommandString>
+      Sp_RequestPalletInTask
+    </CommandString>
+  </Command>
+  <Command ID="Sp_TaskProcess">
+    <CommandString>
+      Sp_TaskProcess
+    </CommandString>
+  </Command>
+  <Command ID="Sp_UpdateTaskState">
+    <CommandString>
+      Sp_UpdateTaskState
+    </CommandString>
+  </Command>
+  <Command ID="Sp_UpdateTaskCellCode">
+    <CommandString>
+      Sp_UpdateTaskCellCode
+    </CommandString>
+  </Command>
+  <Command ID="sp_GetEmptyCellWithPallet">
+    <CommandString>
+      sp_GetEmptyCellWithPallet
+    </CommandString>
+  </Command>
+  <Command ID="sp_GetOutStockCell">
+    <CommandString>
+      sp_GetOutStockCell
+    </CommandString>
+  </Command>
+  <Command ID="Sp_CreateProductInTask">
+    <CommandString>
+      Sp_CreateProductInTask
+    </CommandString>
+  </Command>
+  <Command ID="Sp_UpdateBillTypeCode">
+    <CommandString>
+      Sp_UpdateBillTypeCode
+    </CommandString>
+  </Command>
+  <Command ID="UpdateCell">
+    <CommandString>
+      update CMD_Cell Set IsLock=@IsLock,ProductCode=@ProductCode,BillNo=@BillNo where CellCode=@CellCode)
+    </CommandString>
+  </Command>
+  <Command ID="UpdateCellByFilter">
+    <CommandString>
+      update CMD_Cell Set {0} where {1}
+    </CommandString>
+  </Command>
+  <Command ID="UpdateCellByTaskNo">
+    <CommandString>
+      update CMD_Cell Set IsLock='0',ProductCode=Task.ProductCode,PalletCode=Task.PalletCode,Quantity=1,InDate=Task.FinishDate,BillNo=Task.BillID
+      from CMD_Cell
+      Inner Join WCS_Task Task On CMD_Cell.CellCode=Task.CellCode
+      where Task.TaskNo=@TaskNo
+    </CommandString>
+  </Command>
+  <Command ID="UpdateTaskStateByTaskNo">
+    <CommandString>
+      update WCS_TASK set State=@State where TaskNo=@TaskNo
+    </CommandString>
+  </Command>
+  <Command ID="UpdateTaskCarNoByTaskNo">
+    <CommandString>
+      update WCS_TASK set CarNo=@CarNo where TaskNo=@TaskNo
+    </CommandString>
+  </Command>
+  <Command ID="UpdateTaskTimeByTaskNo">
+    <CommandString>
+      update WCS_TASK set State=@State,StartDate=getdate() where TaskNo=@TaskNo
+    </CommandString>
+  </Command>
+  <Command ID="UpdateBillStateByBillID">
+    <CommandString>
+      update WMS_BillMaster set State=@State where BillID=@BillID
+    </CommandString>
+  </Command>
+  
+  <Command ID="UpdateTaskState">
+    <CommandString>
+      update WCS_TASK set State=@State where TaskNo in (select top 1 TaskNo from WCS_TASK where State='1' and TaskType='11' and CarNo=@CarNo order by RequestDate)
+    </CommandString>
+  </Command>
+  <Command ID="UpdateTaskError">
+    <CommandString>
+      update WCS_TASK set CraneErrCode=@CraneErrCode,CraneErrDesc=@CraneErrDesc where TaskNo=@TaskNo
+    </CommandString>
+  </Command>
+
+  <Command ID="SelectDistinctColumn">
+    <CommandString>
+      SELECT  CMD_Cell.CellCode, CMD_Cell.CellName, CMD_Cell.AreaCode, CMD_Area.AreaName, CMD_Cell.ShelfCode, CMD_Shelf.ShelfName, CMD_Cell.CellRow,
+      CMD_Cell.CellColumn, CMD_Cell.IsActive, CMD_Cell.Priority, CMD_Cell.PalletCode, CMD_Cell.PalletBarcode, CMD_Cell.ProductCode, CMD_Product.ProductName,
+      CMD_Cell.BillNo, WMS_BillMaster.BillTypeCode, CMD_BillType.BillTypeName, CMD_Cell.Quantity, CMD_Cell.IsLock, CMD_Cell.ErrorFlag, CMD_Cell.InDate,
+      CMD_Cell.Memo
+      FROM CMD_Cell LEFT OUTER JOIN
+      CMD_Area ON CMD_Cell.AreaCode = CMD_Area.AreaCode LEFT OUTER JOIN
+      CMD_Shelf ON CMD_Cell.ShelfCode = CMD_Shelf.ShelfCode LEFT OUTER JOIN
+      WMS_BillMaster ON CMD_Cell.BillNo = WMS_BillMaster.BillID LEFT OUTER JOIN
+      CMD_BillType ON WMS_BillMaster.BillTypeCode = CMD_BillType.BillTypeCode LEFT OUTER JOIN
+      CMD_Product ON CMD_Cell.ProductCode = CMD_Product.ProductCode      
+      ORDER BY CMD_Cell.CellCode
+    </CommandString>
+  </Command>
+  <Command ID="SelectCell">
+    <CommandString>
+      SELECT  CMD_Cell.*, CMD_Area.AreaName, CMD_Cell.ShelfCode, CMD_Shelf.ShelfName, VCMD_Product.ProductName,VCMD_Product.ProductTypeName,
+      WMS_BillMaster.BillTypeCode, CMD_BillType.BillTypeName,CMD_ProductState.StateName
+      FROM CMD_Cell
+      LEFT OUTER JOIN CMD_Area ON CMD_Cell.AreaCode = CMD_Area.AreaCode
+      LEFT OUTER JOIN CMD_Shelf ON CMD_Cell.ShelfCode = CMD_Shelf.ShelfCode
+      LEFT OUTER JOIN WMS_BillMaster ON CMD_Cell.BillNo = WMS_BillMaster.BillID
+      LEFT OUTER JOIN CMD_BillType ON WMS_BillMaster.BillTypeCode = CMD_BillType.BillTypeCode
+      LEFT OUTER JOIN VCMD_Product ON CMD_Cell.ProductCode = VCMD_Product.ProductCode
+      LEFT OUTER JOIN CMD_ProductState ON CMD_Cell.StateNo = CMD_ProductState.StateNo
+      order by CMD_Cell.CellCode
+    </CommandString>
+  </Command>
+  <Command ID="SelectCellByFilter">
+    <CommandString>
+      SELECT  CMD_Cell.CellCode, CMD_Cell.CellName, CMD_Cell.AreaCode, CMD_Area.AreaName, CMD_Cell.ShelfCode, CMD_Shelf.ShelfName, CMD_Cell.CellRow,
+      CMD_Cell.CellColumn, CMD_Cell.IsActive, CMD_Cell.Priority, CMD_Cell.PalletCode, CMD_Cell.PalletBarcode, CMD_Cell.ProductCode, VCMD_Product.ProductName,VCMD_Product.ProductTypeName,
+      CMD_Cell.BillNo, WMS_BillMaster.BillTypeCode, CMD_BillType.BillTypeName, CMD_Cell.Quantity, CMD_Cell.IsLock, CMD_Cell.ErrorFlag, CMD_Cell.InDate,
+      CMD_Cell.Memo
+      FROM CMD_Cell
+      LEFT OUTER JOIN CMD_Area ON CMD_Cell.AreaCode = CMD_Area.AreaCode
+      LEFT OUTER JOIN CMD_Shelf ON CMD_Cell.ShelfCode = CMD_Shelf.ShelfCode
+      LEFT OUTER JOIN WMS_BillMaster ON CMD_Cell.BillNo = WMS_BillMaster.BillID
+      LEFT OUTER JOIN CMD_BillType ON WMS_BillMaster.BillTypeCode = CMD_BillType.BillTypeCode
+      LEFT OUTER JOIN VCMD_Product ON CMD_Cell.ProductCode = VCMD_Product.ProductCode
+      Where {0}
+      order by CMD_Cell.CellCode
+    </CommandString>
+  </Command>
+  <Command ID="UpdateBillType">
+    <CommandString>
+      update WMS_BillMaster set BillTypeCode=@Checker,CheckDate={0},State=@State where BillID=@BillID
+    </CommandString>
+  </Command>
+</SqlCommand>
